@@ -111,4 +111,14 @@ let from_file path =
   
   close_in infile ;
   final_graph
-  
+
+
+let export g = 
+  let p e = 
+    printf ";\n  %d -> %d [label = \"%s\"]" e.src e.tgt e.lbl;
+  in 
+    printf "digraph finite_state_machine {\n";
+    printf "  rankdir = LR;\n";
+    printf "  node [shape = circle]";
+    e_iter g p;
+    printf "\n}"
