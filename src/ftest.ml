@@ -1,4 +1,5 @@
 open Gfile
+open Tools
     
 let () =
 
@@ -31,5 +32,5 @@ let () =
   (* Rewrite the graph that has been read. *)
   let () = write_file outfile graph in
 
-  ()
+  Printf.printf "%d\n" (nb_nodes graph)
 
