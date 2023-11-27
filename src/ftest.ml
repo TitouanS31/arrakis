@@ -1,5 +1,6 @@
 open Gfile
 open Tools
+open Ffalgo
     
 let () =
 
@@ -32,5 +33,10 @@ let () =
   (* Rewrite the graph that has been read. *)
   let () = write_file outfile graph in
 
-  Printf.printf "%d\n" (nb_nodes graph)
+  let graph = gmap graph int_of_string in
+  (*let (flow,path) = find_path graph 0 5 in*)
 
+  let path = Option.get (find_path graph 0 5) in
+  List.iter (Printf.printf "%d ") path
+
+  (* TODO: test compute_flow, next_graph and finish that dumb *)
