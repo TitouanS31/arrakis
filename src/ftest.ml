@@ -34,9 +34,28 @@ let () =
   let () = write_file outfile graph in
 
   let graph = gmap graph int_of_string in
-  (*let (flow,path) = find_path graph 0 5 in*)
 
-  let path = Option.get (find_path graph 0 5) in
-  List.iter (Printf.printf "%d ") path
+  let opath = find_path graph 0 5 in
+  let path = Option.get opath in
+  let flow = compute_flow graph path in
+  let ng = next_graph graph path flow in
+
+  (* List.iter (Printf.printf "%d ") path;
+  Printf.printf "\nFlow: %d\n" flow;
+  export (gmap ng string_of_int); *)
+
+  let onpath = find_path ng 0 5 in
+  let npath = Option.get onpath in
+  let nflow = compute_flow ng npath in
+  let nng = next_graph ng npath nflow in
+
+  List.iter (Printf.printf "%d ") npath;
+  Printf.printf "\nFlow: %d\n" nflow;
+  export (gmap nng string_of_int);
+
+  (* export (gmap nng string_of_int); *)
+
+  let fg = ford_fulkerson graph 0 5 in 
+  export (gmap fg (fun (x,y) -> Printf.sprintf "(%d,%d)" x y));
 
   (* TODO: test compute_flow, next_graph and finish that dumb *)
