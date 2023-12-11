@@ -1,4 +1,4 @@
 open Graph
 
 
-val graph_of_string: string -> int graph
+val analyze_cricket: string -> (string * bool * (int*int) graph) list
