@@ -3,6 +3,7 @@ open Ffalgo
 
 let source_index = -1
 let sink_index = -2
+exception NegativeNumber of string
 
 (*
 let rec string_repeat str n = 
@@ -87,7 +88,11 @@ let graph_of_cricket data t =
   (* Add arcs from teams to sink. *)
   let f4 g a = 
     let (_,wins_a,_) = List.nth data a in
-    let arc = {src=a; tgt=sink_index; lbl = wins_t + nbRemainingMatches_t - wins_a} in
+    let team_to_sink = 
+      if (wins_t + nbRemainingMatches_t - wins_a) < 0
+        then raise (NegativeNumber "Can't win anymore.")
+        else wins_t + nbRemainingMatches_t - wins_a in
+    let arc = {src=a; tgt=sink_index; lbl = team_to_sink} in
     new_arc g arc
   in
   let graph = List.fold_left f4 graph teams in
@@ -107,9 +112,12 @@ let analyze_cricket path =
   let teams = List.init n (fun x -> x) in
   let f t = 
     let (name,_,_) = List.nth data t in
-    let graph = graph_of_cricket data t in
-    let final_graph = ford_fulkerson graph source_index sink_index in
-    let can_win = check_sat final_graph source_index in
-    (name,can_win,final_graph)
+    try 
+      let graph = graph_of_cricket data t in
+      let final_graph = ford_fulkerson graph source_index sink_index in
+      let can_win = check_sat final_graph source_index in
+      (name,can_win,final_graph)
+    with NegativeNumber _ -> 
+      (name,false,empty_graph)
   in
   List.map f teams
