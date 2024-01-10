@@ -23,13 +23,17 @@ let get_line file =
   let line = input_line file in
   let tokens = String.split_on_char ' ' line in
   let team = List.hd tokens in
+  let () = Printf.printf "A" in
   let wins = int_of_string (List.nth tokens 1) in
+  let () = Printf.printf "B" in
   let remainingList = List.map (int_of_string) (List.tl (List.tl tokens)) in
   (team,wins,remainingList)
 
 (* Reads the list of all teams and stats. *)
 let get_cricket file = 
-  let n = int_of_string (input_line file) in 
+  let first_line = input_line file in
+  let () = Printf.printf "%s %d\n" first_line (String.length first_line) in
+  let n = int_of_string first_line in 
   let rec loop acu = function
     | 0 -> acu
     | i -> loop ((get_line file)::acu) (i-1)
