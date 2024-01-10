@@ -5,27 +5,16 @@ let source_index = -1
 let sink_index = -2
 exception NegativeNumber of string
 
-(*
-let rec string_repeat str n = 
-  let rec loop acu = function 
-  | 0 -> acu
-  | k -> loop (str ^ acu) (k-1)
-  in
-    loop str n
-*)
-
 let list_combine la lb =
   let comb list x = List.map (fun e -> (x,e)) list in
   List.fold_left (fun l x -> l @ (comb la x)) [] lb
 
-(* Reads a line and return the tuple associated *)
+(* Reads a line in the file and return the tuple (team, nbWin, remainingList) *)
 let get_line file =
   let line = input_line file in
   let tokens = String.split_on_char ' ' line in
   let team = List.hd tokens in
-  let () = Printf.printf "A" in
   let wins = int_of_string (List.nth tokens 1) in
-  let () = Printf.printf "B" in
   let remainingList = List.map (int_of_string) (List.tl (List.tl tokens)) in
   (team,wins,remainingList)
 

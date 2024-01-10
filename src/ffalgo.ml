@@ -68,6 +68,13 @@ let next_graph g path flow =
   s and t are respectively the source and the sink.
   Return the the flow graph with the given capacity. *)
 let ford_fulkerson graph s t =
+
+  (* Check s and t are present in graph. *)
+  let () = assert (node_exists graph s) 
+  and () = assert (node_exists graph t) 
+
+  in
+
   let rec loop g = 
     let opt_path = find_path g s t in 
     match opt_path with
@@ -75,17 +82,24 @@ let ford_fulkerson graph s t =
       | Some path -> 
         let flow = compute_flow g path in
         let ng = next_graph g path flow in
-          loop ng
+        loop ng
+  in
+
+  (* Compute the final graph. *)
+  let final_graph = loop graph in
+
+  (* Function for fold to clean the final graph.*)
+  let func g e =  
+    let capacity = e.lbl in
+    let r_arc_opt = find_arc final_graph e.tgt e.src in
+    let flow = 
+      match r_arc_opt with
+      | None -> 0
+      | Some r_arc -> r_arc.lbl
     in
-      let final_graph = loop graph in
-      (* export (gmap final_graph string_of_int); *)
-      let func g e =  
-        let capacity = e.lbl in
-        let r_arc_opt = find_arc final_graph e.tgt e.src in
-        let flow = match r_arc_opt with
-          | None -> 0
-          | Some r_arc -> r_arc.lbl
-        in
-          new_arc g {e with lbl=(flow,capacity)}
-      in
-        e_fold graph func (clone_nodes graph)
+    new_arc g {e with lbl=(flow,capacity)}
+
+  in
+
+  (* Loop over first graph to only keep useful edges of final graph. *)
+  e_fold graph func (clone_nodes graph)

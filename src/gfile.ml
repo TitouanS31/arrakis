@@ -113,12 +113,16 @@ let from_file path =
   final_graph
 
 
-let export g = 
-  let p e = 
-    printf ";\n  %d -> %d [label = \"%s\"]" e.src e.tgt e.lbl;
+(* Return the digraph string representing the graph g. *)
+let digraph g = 
+  let string_of_edge e = 
+    sprintf ";\n  %d -> %d [label = \"%s\"]" e.src e.tgt e.lbl;
+
   in 
-    printf "digraph finite_state_machine {\n";
-    printf "  rankdir = LR;\n";
-    printf "  node [shape = circle]";
-    e_iter g p;
-    printf "\n}"
+    let header = (
+      "digraph finite_state_machine {\n" ^    
+      "  rankdir = LR;\n" ^
+      "  node [shape = circle]") in
+    let body = e_fold g (fun s e -> s ^ string_of_edge e) "" in
+    let trailer = "\n}" in
+    header ^ body ^ trailer
