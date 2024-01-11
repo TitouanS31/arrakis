@@ -37,7 +37,7 @@ let () =
       (fun (x,y) -> 
         if y < Int.max_int / 2 
         then Printf.sprintf "%d/%d" x y 
-        else "&infin;") (* Infinity symbol for big numbers. *)
+        else Printf.sprintf "%d/%s" x "&infin;") (* Infinity symbol for big capacity value. *)
     in
 
     (* Write digraph. *)
