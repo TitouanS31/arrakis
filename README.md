@@ -1,22 +1,11 @@
-Base project for Ocaml project on Ford-Fulkerson. This project contains some simple configuration files to facilitate editing Ocaml in VSCode.
+# Arrakis #
+Arrakis is an OCamL/C# project created by Titouan Seraud and Hugo Girard during first semester of our 4th year of INSA. 
+## What is Arrakis ? ##
+This project implements [Ford-Fulkerson algorithm](https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm) using OCamL.  
 
-To use, you should install the *OCaml Platform* extension in VSCode.
-Then open VSCode in the root directory of this repository (command line: `code path/to/ocaml-maxflow-project`).
-
-Features :
- - full compilation as VSCode build task (Ctrl+Shift+b)
- - highlights of compilation errors as you type
- - code completion
- - view of variable types
+It applies Ford-Fulkerson to a real-life problem: knowing if a (probably sport) team can still win a championship at a given moment.  
 
 
-A [`Makefile`](Makefile) provides some useful commands:
 
- - `make build` to compile. This creates an `ftest.exe` executable
- - `make demo` to run the `ftest` program with some arguments
- - `make format` to indent the entire project
- - `make edit` to open the project in VSCode
- - `make clean` to remove build artifacts
 
-In case of trouble with the VSCode extension (e.g. the project does not build, there are strange mistakes), a common workaround is to (1) close vscode, (2) `make clean`, (3) `make build` and (4) reopen vscode (`make edit`).
 
