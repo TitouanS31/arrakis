@@ -3,3 +3,6 @@ outfile
 *~
 *.exe
 .vscode
+nba/bin
+nba/obj
+nba/*.txt

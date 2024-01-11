@@ -40,7 +40,7 @@ class Program
 
     public static void CreateTextFile(List<Team> teams)
     {
-        string date = DateTime.Now.ToString("ddMMyyyy");
+        string date = DateTime.Now.ToString("dd_MM_yyyy");
 
         string filePath = Directory.GetCurrentDirectory() + "/statsNBA_" + date + ".txt";
         if(File.Exists(filePath))
