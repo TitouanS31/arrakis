@@ -1,4 +1,4 @@
-.PHONY: all build buildFF buildS format edit demoFF demoS clean
+.PHONY: all build buildFF buildS buildNBA format edit demoFF demoS fetchNBA clean
 
 # Parameters for Ford-Fulkerson algorithm
 src?=0
@@ -8,14 +8,19 @@ graph?=graph2.txt
 
 # Parameters for competition analysis 
 stats_folder?=stats
-stats?=statsNBA.txt
+stats?=statsCricket.txt
 
 # Output file name
 output?=outfile
 
 all: build
 
-build: buildFF buildS
+build: buildFF buildS buildNBA
+
+buildNBA: 
+	@echo "\n   🚨  COMPILING  🚨 \n"
+	cd nba
+	dotnet build
 
 buildFF:
 	@echo "\n   🚨  COMPILING  🚨 \n"
@@ -42,6 +47,11 @@ demoS: buildS
 	@echo "\n   🥁  RESULT (content of ${output})  🥁\n"
 	@cat ${output}
 
+fetchNBA: buildNBA
+	@echo "\n   ⚡  EXECUTING  ⚡\n"
+	cd nba
+	dotnet run
+
 format:
 	ocp-indent --inplace src/*
 
@@ -51,4 +61,7 @@ edit:
 clean:
 	find -L . -name "*~" -delete
 	rm -f *.exe
-	dune clean
+	dune clean || true
+	rm -rf nba/obj
+	rm -rf nba/bin
+	rm -f nba/statsNBA_????????.txt
