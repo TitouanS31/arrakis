@@ -97,7 +97,7 @@ let check_sat graph s =
   let arcs = out_arcs graph s in
   List.for_all (fun a -> match a.lbl with (x,y) -> x=y) arcs
 
-
+(* Analyze a data file and return the result (name of team, a boolean representing its possibility to win, graph associated). *)
 let analyze_cricket path = 
   let file = open_in path in
   let data = get_cricket file in
@@ -110,6 +110,7 @@ let analyze_cricket path =
       let final_graph = ford_fulkerson graph source_index sink_index in
       let can_win = check_sat final_graph source_index in
       (name,can_win,final_graph)
+    (* If negative number between sink and pre-sink nodes, a team automatically can't win. *)
     with NegativeNumber _ -> 
       (name,false,empty_graph)
   in
